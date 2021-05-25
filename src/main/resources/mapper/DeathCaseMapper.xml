@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.lab03.mapper.DeathCaseMapper">
+
+    <update id="dropData">
+        truncate table death_case;
+    </update>
+
+    <select id="onlyChina" resultType="com.example.lab03.entity.DeathCase">
+        SELECT * FROM death_case
+        where country_name = "China" and date_time = #{dateTime} order by cases desc limit #{showValue}
+    </select>
+
+    <select id="getData"  resultType="com.example.lab03.entity.DeathCase">
+        SELECT * FROM death_case
+        where date_time = #{dateTime}
+        order by cases desc limit #{showValue}
+    </select>
+
+    <select id="countTotal" resultType="java.lang.Integer">
+        SELECT sum(cases) from death_case where date_time = #{dateTime}
+    </select>
+
+
+    <insert id="insertBatch">
+        insert into death_case (id,country_name,region_name,lat,lng,date_time,cases)
+        VALUES <foreach collection="list" item="item" index="index" separator=",">
+        (#{item.id},#{item.countryName},#{item.regionName},#{item.lat},#{item.lng},#{item.dateTime},#{item.cases})
+        </foreach>
+    </insert>
+
+
+
+
+</mapper>
